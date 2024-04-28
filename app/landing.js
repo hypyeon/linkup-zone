@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text, View, Pressable, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import useCustomFonts, { onLayoutRootView } from '../constants/fonts';
+import useCustomFonts from '../constants/fonts';
 import { useRouter } from 'expo-router';
 
 export default function Landing() {
   const router = useRouter();
-  useCustomFonts();
+  const { onLayoutRootView } = useCustomFonts();
 
   let img1 = require("../assets/images/landing-1.png");
   let img2 = require("../assets/images/landing-2.png");
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 36,
     textAlign: 'center',
-    fontFamily: 'NotoSansCherokee-Black',
+    fontFamily: 'Finlandica-Bold',
     color: 'white',
   },
   textShadow: {
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     paddingRight: 32,
   },
   signInText: {
-    color: 'rgba(68, 164, 186, 0.75)',
+    color: 'rgb(68, 164, 186)',
   },
   signUpText: {
     color: 'white',

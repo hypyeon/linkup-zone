@@ -1,13 +1,14 @@
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { StyleSheet, View, Text, Image, TextInput, TouchableOpacity } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 import useCustomFonts from '../constants/fonts';
 import { useRouter } from 'expo-router';
 import React, { useRef, useState } from 'react';
 import Loading from '../components/Loading';
 
 export default function SignUp() {
-  useCustomFonts();
+  const { onLayoutRootView } = useCustomFonts();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -18,23 +19,31 @@ export default function SignUp() {
 
   const handleRegister = async () => {
     if (!emailRef.current || !pwRef.current || !usernameRef.current || !timezoneRef.current) {
-      Alert.alert("Required field(s) are missing");
+      Alert.alert("Required field(s) missing");
       return;
     }
   }
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} onLayout={onLayoutRootView}>
       <View>
         <Image style={{height: hp(32)}} resizeMode='contain' source={require('../assets/images/signup.png')} />
       </View>
       <View>
-        <Text style={styles.title}>Welcome back!</Text>
+        <Text style={styles.title}>Register as a New Linkup Zoner</Text>
         <View>
           <View style={styles.textInput}>
             <Entypo name="mail" size={24} color={primaryColor} />
             <TextInput 
               placeholder="Email address" 
+              style={styles.finlandica}
+              onChangeText={(v) => emailRef.current = v}
+            />
+          </View>
+          <View style={styles.textInput}>
+            <FontAwesome5 name="user-alt" size={24} color={primaryColor} />
+            <TextInput 
+              placeholder="Username" 
               style={styles.finlandica}
               onChangeText={(v) => emailRef.current = v}
             />
@@ -48,12 +57,23 @@ export default function SignUp() {
               onChangeText={(v) => pwRef.current = v}
             />
           </View>
+          <View style={styles.textInput}>
+            <Entypo name="globe" size={24} color={primaryColor} />
+            <TextInput 
+              placeholder="Time zone" 
+              style={styles.finlandica}
+              onChangeText={(v) => emailRef.current = v}
+            />
+          </View>
+          
         </View>
 
         <View>
           {
             loading ? (
-              <Loading />
+              <View className="flex-row justify-center">
+                <Loading size={hp(20)} />
+              </View>
             ) : (
               <View>
                 <TouchableOpacity 
@@ -66,10 +86,10 @@ export default function SignUp() {
                     marginTop: 20
                   }} 
                   onPress={handleRegister}>
-                  <Text style={styles.button}>Sign In</Text>
+                  <Text style={styles.button}>Sign Up</Text>
                 </TouchableOpacity> 
                 <View style={{marginTop: 12}}>
-                  <Text className="text-gray-500" style={[styles.finlandica, {textAlign: 'center'}]}>Already have an account? 
+                  <Text className="text-gray-500" style={[styles.finlandica, {textAlign: 'center', color: 'dimgray'}]}>Already have an account? 
                     <Text style={{color: primaryColor, fontFamily: 'NotoSansCherokee-SemiBold'}} onPress={() => router.push('signIn')}> Sign In</Text>
                   </Text>
                 </View>

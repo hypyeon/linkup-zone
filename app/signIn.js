@@ -7,7 +7,7 @@ import React, { useRef, useState } from 'react';
 import Loading from '../components/Loading';
 
 export default function SignIn() {
-  useCustomFonts();
+  const { onLayoutRootView } = useCustomFonts();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -21,7 +21,7 @@ export default function SignIn() {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} onLayout={onLayoutRootView}>
       <View>
         <Image style={{height: hp(32)}} resizeMode='contain' source={require('../assets/images/signin.png')} />
       </View>
@@ -45,13 +45,17 @@ export default function SignIn() {
               onChangeText={(v) => pwRef.current = v}
             />
           </View>
-          <Text className="text-right text-gray-500" style={styles.finlandica}>Forgot password?</Text>
+          <Text 
+            style={[styles.finlandica, {color: 'dimgray', textAlign: 'right', fontSize: 13, textDecorationStyle: 'dotted', textDecorationLine: 'underline'}]}
+          >Forgot password?</Text>
         </View>
 
         <View>
           {
             loading ? (
-              <Loading />
+              <View className="flex-row justify-center">
+                <Loading size={hp(20)} />
+              </View>
             ) : (
               <View>
                 <TouchableOpacity 
@@ -67,7 +71,7 @@ export default function SignIn() {
                   <Text style={styles.button}>Sign In</Text>
                 </TouchableOpacity> 
                 <View style={{marginTop: 12}}>
-                  <Text className="text-gray-500" style={[styles.finlandica, {textAlign: 'center'}]}>Don't have an account? 
+                  <Text style={[styles.finlandica, {textAlign: 'center', color: 'dimgray'}]}>Don't have an account? 
                     <Text style={{color: primaryColor, fontFamily: 'NotoSansCherokee-SemiBold'}} onPress={() => router.push('signUp')}> Sign Up</Text>
                   </Text>
                 </View>
