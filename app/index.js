@@ -1,10 +1,10 @@
 import React from 'react';
-import SignIn from '../screens/SignIn';
+import { View, ActivityIndicator } from 'react-native';
 
-function App() {
+export default function LandingPage() {
   return (
-    <SignIn />
+    <View className="flex-1 justify-center items-center">
+      <ActivityIndicator size="large" color="gray" />
+    </View>
   )
-}
-
-export default App;
+};
