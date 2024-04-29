@@ -5,17 +5,28 @@ import useCustomFonts from '../constants/fonts';
 import { useRouter } from 'expo-router';
 import React, { useRef, useState } from 'react';
 import Loading from '../components/Loading';
+import { useAuth } from '../context/auth';
+import { Alert } from 'react-native';
 
 export default function SignIn() {
   const { onLayoutRootView } = useCustomFonts();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const { login } = useAuth();
 
   const emailRef = useRef("");
   const pwRef = useRef("");
   const handleLogin = async () => {
     if (!emailRef.current || !pwRef.current) {
       Alert.alert("Email and password are required");
+      return;
+    }
+    setLoading(true);
+    const response = await login(emailRef.current, pwRef.current);
+    setLoading(false);
+    // console.log('sign in response: ', response);
+    if (!response.success) {
+      Alert.alert('Sign In Error', response.msg);
       return;
     }
   }
@@ -34,6 +45,7 @@ export default function SignIn() {
               placeholder="Email address" 
               style={styles.finlandica}
               onChangeText={(v) => emailRef.current = v}
+              autoCapitalize='none'
             />
           </View>
           <View style={styles.textInput}>
@@ -43,6 +55,7 @@ export default function SignIn() {
               style={styles.finlandica}
               secureTextEntry={true}
               onChangeText={(v) => pwRef.current = v}
+              autoCapitalize='none'
             />
           </View>
           <Text 

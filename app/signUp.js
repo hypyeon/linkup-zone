@@ -6,6 +6,11 @@ import useCustomFonts from '../constants/fonts';
 import { useRouter } from 'expo-router';
 import React, { useRef, useState } from 'react';
 import Loading from '../components/Loading';
+import { Temporal } from '@js-temporal/polyfill';
+import { useAuth } from '../context/auth';
+import { Alert } from 'react-native';
+// import CustomKeyboardView from '../components/CustomKeyboardView';
+
 
 export default function SignUp() {
   const { onLayoutRootView } = useCustomFonts();
@@ -15,11 +20,30 @@ export default function SignUp() {
   const emailRef = useRef("");
   const pwRef = useRef("");
   const usernameRef = useRef("");
-  const timezoneRef = useRef("");
+
+  const now = Temporal.Now.timeZoneId();
+  const timezoneRef = useRef(now);
+
+  const formatTimeZone = (timeZoneId) => {
+    const timeZone = Temporal.TimeZone.from(timeZoneId);
+    const offset = timeZone.getOffsetStringFor(Temporal.Now.instant());
+    return `${timeZoneId} (UTC${offset})`;
+  };
+
+  const { register } = useAuth();
 
   const handleRegister = async () => {
-    if (!emailRef.current || !pwRef.current || !usernameRef.current || !timezoneRef.current) {
+    if (!emailRef.current || !pwRef.current || !usernameRef.current) {
       Alert.alert("Required field(s) missing");
+      return;
+    }
+    setLoading(true);
+    let response = await register(emailRef.current, pwRef.current, usernameRef.current, timezoneRef.current); 
+    setLoading(false);
+
+    console.log('response: ', response);
+    if (!response.success) {
+      Alert.alert('Sign Up Error', response.msg);
       return;
     }
   }
@@ -38,6 +62,7 @@ export default function SignUp() {
               placeholder="Email address" 
               style={styles.finlandica}
               onChangeText={(v) => emailRef.current = v}
+              autoCapitalize='none'
             />
           </View>
           <View style={styles.textInput}>
@@ -45,7 +70,7 @@ export default function SignUp() {
             <TextInput 
               placeholder="Username" 
               style={styles.finlandica}
-              onChangeText={(v) => emailRef.current = v}
+              onChangeText={(v) => usernameRef.current = v}
             />
           </View>
           <View style={styles.textInput}>
@@ -55,15 +80,12 @@ export default function SignUp() {
               style={styles.finlandica}
               secureTextEntry={true}
               onChangeText={(v) => pwRef.current = v}
+              autoCapitalize='none'
             />
           </View>
           <View style={styles.textInput}>
             <Entypo name="globe" size={24} color={primaryColor} />
-            <TextInput 
-              placeholder="Time zone" 
-              style={styles.finlandica}
-              onChangeText={(v) => emailRef.current = v}
-            />
+            <Text style={styles.finlandica}>{formatTimeZone(timezoneRef.current)}</Text>
           </View>
           
         </View>
@@ -89,7 +111,7 @@ export default function SignUp() {
                   <Text style={styles.button}>Sign Up</Text>
                 </TouchableOpacity> 
                 <View style={{marginTop: 12}}>
-                  <Text className="text-gray-500" style={[styles.finlandica, {textAlign: 'center', color: 'dimgray'}]}>Already have an account? 
+                  <Text style={[styles.finlandica, {textAlign: 'center', color: 'dimgray'}]}>Already have an account? 
                     <Text style={{color: primaryColor, fontFamily: 'NotoSansCherokee-SemiBold'}} onPress={() => router.push('signIn')}> Sign In</Text>
                   </Text>
                 </View>
