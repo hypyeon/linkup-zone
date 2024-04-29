@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: hp(2.5), 
-    fontFamily: 'Finlandica-SemiBold',
+    fontFamily: 'Fin-SB',
     color: primaryColor
   }
 });

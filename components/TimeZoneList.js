@@ -1,95 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Pressable, TextInput, Image } from 'react-native';
-// import { DateTime } from 'luxon';
+import { DateTime } from 'luxon';
 import useCustomFonts from '../constants/CustomFonts';
 import moment from 'moment-timezone';
+import { useRouter } from 'expo-router';
+import Clock from './Clock';
 
-const allTimeZones = moment.tz.names();
-
-export default function TimeZoneList({ onSelectTimeZone }) {
+export default function TimeZoneList() {
   const { onLayoutRootView } = useCustomFonts();
-  
-  const [searchQuery, setSearchQuery] = useState('');
-  const [showSearchInput, setShowSearchInput] = useState(false);
-  const [selectedTimeZone, setSelectedTimeZone] = useState(null);
-
-  const handleSelectTimeZone = (timeZone) => {
-    console.log('selected time zone: ', timeZone);
-    onSelectTimeZone(timeZone);
-    setSelectedTimeZone(timeZone);
-    setSearchQuery('');
-    setShowSearchInput(false);
-  };
-
-  const handleClearSelectedTimeZone = () => {
-    setSelectedTimeZone(null);
-    setShowSearchInput(true);
-  };
-
-  const filteredTimeZones = searchQuery
-    ? allTimeZones.filter((timeZone) => timeZone.toLowerCase().includes(searchQuery.toLowerCase())) 
-    : [];
-  
+  const router = useRouter();
+  const userTime = DateTime.local().zoneName; 
+  const timeSample1 = 'Asia/Seoul';
+  const timeSample2 = 'Asia/Hong_Kong';
   const plus = require('../assets/images/Add.png');
   
   return (
     <View style={styles.container} onLayout={onLayoutRootView}>
-      {!showSearchInput && (
-        <Pressable onPress={() => setShowSearchInput(!showSearchInput)}>
-          <Image source={plus} />
-        </Pressable>
-      )}
-      {showSearchInput && (
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search country..."
-          onChangeText={(text) => setSearchQuery(text)}
-          value={searchQuery}
-        />
-      )}
-      {selectedTimeZone && (
-        <View style={styles.selectedTimeZone}>
-          <Text style={styles.selectedTimeZoneText}>{selectedTimeZone}</Text>
-          <Pressable onPress={handleClearSelectedTimeZone}>
-            <Text>Clear</Text>
-          </Pressable>
-        </View>
-      )}
-      {filteredTimeZones.map((timeZone, index) => (
-        <Pressable key={index} style={styles.timeZoneItem} onPress={() => handleSelectTimeZone(timeZone)}>
-          <Text style={styles.timeZoneText}>{timeZone}</Text>
-        </Pressable>
-      ))}
+      <View style={styles.clock}>
+        <Clock zoneName={userTime} />
+      </View>
+      <View style={styles.clock}>
+        <Clock zoneName={timeSample1} />
+      </View>
+      <View style={styles.clock}>
+        <Clock zoneName={timeSample2} />
+      </View>
+      <Pressable onPress={() => router.push('zoneSearch')}>
+        <Image source={plus} style={styles.addBtn} />
+      </Pressable>
     </View>  
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    display: 'flex',
     width: '100%',
+    height: '76%',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    backgroundColor: '#F9F9F9',
+    zIndex: -1,
+    overflowY: 'scroll',
+    paddingVertical: 32,
   },
-  timeZoneItem: {
-    width: '85%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E5E5',
+  clock: {
+    marginBottom: 16,
   },
-  timeZoneText: {
-    fontSize: 16,
-    fontFamily: 'NotoSansCherokee-Regular',
-  },
-  selectedTimeZone: {
-    marginTop: 16,
-    alignItems: 'center',
-  },
-  selectedTimeZoneText: {
-    fontSize: 16,
-    fontFamily: 'NotoSansCherokee-Regular',
+  addBtn: {
+    width: 48,
+    resizeMode: 'contain',
   },
 });
