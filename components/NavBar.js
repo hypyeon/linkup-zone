@@ -9,6 +9,7 @@ import {
   MenuTrigger,
 } from 'react-native-popup-menu';
 import { useAuth } from '../context/auth';
+import useCustomFonts from '../constants/CustomFonts';
 
 let tz = require("../assets/images/Clock.png");
 let ct = require("../assets/images/Contacts.png");
@@ -21,16 +22,17 @@ export default function NavBar() {
   const handleLogout = async () => {
     await logout();
   }
+  const { onLayoutRootView } = useCustomFonts();
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} onLayout={onLayoutRootView}>
       <Pressable onPress={() => router.push('timezones')}>
         <Image source={tz} style={styles.img} />
       </Pressable>
       <Pressable onPress={() => router.push('contacts')}>
         <Image source={ct} style={styles.img} />
       </Pressable>
-      <Pressable onPress={() => router.push('chat')}>
+      <Pressable onPress={() => router.push('chats')}>
         <Image source={ch} style={styles.img} />
       </Pressable>
       <Menu>
