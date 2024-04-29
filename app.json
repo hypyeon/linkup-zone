@@ -31,7 +31,12 @@
     },
     "plugins": [
       "expo-router",
-      "expo-font"
+      [
+        "expo-font", 
+        {
+          "fonts": ["./assets/fonts/Finlandica_400Regular.ttf", "./assets/fonts/Finlandica_500Medium.ttf", "./assets/fonts/Finlandica_600SemiBold.ttf", "./assets/fonts/Finlandica_700Bold.ttf", "./assets/fonts/NotoSansCherokee_600SemiBold.ttf", "./assets/fonts/NotoSansCherokee_900Black.ttf"]
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

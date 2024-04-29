@@ -2,6 +2,7 @@ import { Slot, useSegments, useRouter } from "expo-router";
 import "../global.css";
 import { AuthProvider, useAuth } from "../context/auth";
 import { useEffect } from "react";
+import { MenuProvider } from 'react-native-popup-menu';
 
 const MainLayout = () => {
   const {isAuthenticated} = useAuth();
@@ -15,8 +16,8 @@ const MainLayout = () => {
       return;
     }
     if (isAuthenticated && !inApp) {
-      // users redirected to dashboard
-      router.replace("dashboard");
+      // users redirected to chats
+      router.replace("contacts");
     } else if (isAuthenticated == false) {
       // users redirected to landing page
       router.replace("landing");
@@ -28,8 +29,10 @@ const MainLayout = () => {
 
 export default function RootLayout() {
   return (
-    <AuthProvider>
-      <MainLayout />
-    </AuthProvider>
+    <MenuProvider>
+      <AuthProvider>
+        <MainLayout />
+      </AuthProvider>
+    </MenuProvider>
   );
 }

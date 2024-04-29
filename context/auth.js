@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { auth, db, usersRef, roomRef, docSnap, getDoc } from '../firebaseConfig';
-import { doc, setDoc } from "firebase/firestore";
+import { auth, db } from '../firebaseConfig';
+import { doc, setDoc, getDoc } from "firebase/firestore";
 
 export const Auth = createContext();
 
@@ -56,8 +56,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await createUserWithEmailAndPassword(auth, email, password);
       console.log('response.user: ', response?.user);
-
-      await setDoc(doc(usersRef, response?.user?.uid), {
+      await setDoc(doc(db, 'users', response?.user?.uid), {
         email,
         username,
         timezone,
@@ -73,7 +72,10 @@ export const AuthProvider = ({ children }) => {
   }
 
   return (
-    <Auth.Provider value={{ user, isAuthenticated, login, logout, register }}>
+    <Auth.Provider 
+      value={
+        { user, isAuthenticated, login, logout, register }
+      }>
       {children}
     </Auth.Provider>
   )

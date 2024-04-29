@@ -2,7 +2,7 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 import { StyleSheet, View, Text, Image, TextInput, TouchableOpacity } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
-import useCustomFonts from '../constants/fonts';
+import useCustomFonts from '../constants/CustomFonts.js';
 import { useRouter } from 'expo-router';
 import React, { useRef, useState } from 'react';
 import Loading from '../components/Loading';
@@ -10,7 +10,6 @@ import { Temporal } from '@js-temporal/polyfill';
 import { useAuth } from '../context/auth';
 import { Alert } from 'react-native';
 // import CustomKeyboardView from '../components/CustomKeyboardView';
-
 
 export default function SignUp() {
   const { onLayoutRootView } = useCustomFonts();

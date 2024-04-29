@@ -1,7 +1,7 @@
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { StyleSheet, View, Text, Image, TextInput, TouchableOpacity } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
-import useCustomFonts from '../constants/fonts';
+import useCustomFonts from '../constants/CustomFonts.js';
 import { useRouter } from 'expo-router';
 import React, { useRef, useState } from 'react';
 import Loading from '../components/Loading';

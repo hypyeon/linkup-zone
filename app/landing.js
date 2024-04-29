@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Pressable, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import useCustomFonts from '../constants/fonts';
+import useCustomFonts from '../constants/CustomFonts.js';
 import { useRouter } from 'expo-router';
 
 export default function Landing() {
