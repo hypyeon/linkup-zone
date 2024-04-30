@@ -4,12 +4,7 @@ import CustomHeaders from '../../components/CustomHeaders';
 import NavBar from '../../components/NavBar';
 import TimeZoneSearch from '../../components/TimeZoneSearch';
 
-export default function Timezones() {
-  const [selectedTimeZone, setSelectedTimeZone] = useState(null);
-
-  const handleSelectTimeZone = (timeZone) => {
-    setSelectedTimeZone(timeZone);
-  };
+export default function ZoneSearch() {
 
   return (
     <View style={styles.container}>

@@ -5,16 +5,11 @@ import NavBar from '../../components/NavBar';
 import TimeZoneList from '../../components/TimeZoneList';
 
 export default function Timezones() {
-  const [selectedTimeZone, setSelectedTimeZone] = useState(null);
-
-  const handleSelectTimeZone = (timeZone) => {
-    setSelectedTimeZone(timeZone);
-  };
 
   return (
     <View style={styles.container}>
       <CustomHeaders title="Time Zones" />
-      <TimeZoneList onSelectTimeZone={handleSelectTimeZone} />
+      <TimeZoneList />
       <NavBar />
     </View>
   )

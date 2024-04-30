@@ -52,7 +52,7 @@ export default function NavBar() {
             },
           }}
         >
-          <MenuOption onSelect={() => handleLogout} text='Sign Out' />
+          <MenuOption onSelect={handleLogout} text='Sign Out' />
         </MenuOptions>
       </Menu>
     </View>

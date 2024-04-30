@@ -111,7 +111,7 @@ export default function SignUp() {
                 </TouchableOpacity> 
                 <View style={{marginTop: 12}}>
                   <Text style={[styles.finlandica, {textAlign: 'center', color: 'dimgray'}]}>Already have an account? 
-                    <Text style={{color: primaryColor, fontFamily: 'NotoSansCherokee-SemiBold'}} onPress={() => router.push('signIn')}> Sign In</Text>
+                    <Text style={{color: primaryColor, fontFamily: 'NSC-SB'}} onPress={() => router.push('signIn')}> Sign In</Text>
                   </Text>
                 </View>
               </View>
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     color: primaryColor,
     marginBottom: 12,
     marginTop: 20,
-    fontFamily: 'Finlandica-Bold',
+    fontFamily: 'Fin-Bold',
     width: wp(70),
     textAlign: 'center',
   },
@@ -156,11 +156,11 @@ const styles = StyleSheet.create({
   },
   finlandica: {
     fontSize: 14,
-    fontFamily: 'Finlandica-Regular',
+    fontFamily: 'Fin-Reg',
   },
   button: {
     color: 'white',
     fontSize: 16,
-    fontFamily: 'NotoSansCherokee-Black',
+    fontFamily: 'NSC-Black',
   },
 });

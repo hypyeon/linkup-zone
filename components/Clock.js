@@ -2,8 +2,27 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Pressable, TextInput, Image } from 'react-native';
 import { DateTime } from 'luxon';
 import useCustomFonts from '../constants/CustomFonts';
-import moment from 'moment-timezone';
-import { useRouter } from 'expo-router';
+// import moment from 'moment-timezone';
+
+export function avoidGMT(zoneName) {
+  const timeZoneAbbrev = {
+    "Asia/Seoul": "KST",    // South Korea
+    "Asia/Tokyo": "JST",    // Japan
+    "Asia/Shanghai": "CST", // China Standard Time
+    "Asia/Taipei": "CST",   // Taiwan
+    "Asia/Hong_Kong": "HKT",// Hong Kong
+    "Asia/Singapore": "SGT",// Singapore
+    "Asia/Bangkok": "ICT",  // Thailand
+    "Asia/Kolkata": "IST",  // India
+    "Asia/Dubai": "GST",    // United Arab Emirates
+  };
+  const dt = DateTime.local().setZone(zoneName);
+  if (timeZoneAbbrev.hasOwnProperty(zoneName)) {
+    return timeZoneAbbrev[zoneName];
+  } else {
+    return dt.toFormat('ZZZZ');
+  }
+}
 
 export default function Clock({ zoneName }) {
   const { onLayoutRootView } = useCustomFonts();
@@ -23,7 +42,7 @@ export default function Clock({ zoneName }) {
   }, [zoneName]);
 
   const formattedTime = [
-    dt.offsetNameShort,
+    avoidGMT(zoneName),
     utc,
     dt.toFormat('MMMM dd, yyyy')
   ]
@@ -33,13 +52,13 @@ export default function Clock({ zoneName }) {
   return (
     <View style={styles.defaultTime} onLayout={onLayoutRootView}>
       <View style={styles.userTimeZone}>
-        <Text style={{fontSize: 26, fontFamily: 'NSC-Reg', letterSpacing: -1}}>{formattedTime[0]}</Text>
-        <Text style={{fontSize: 12, fontFamily: 'Fin-Reg', color: 'rgb(68, 164, 186)'}}>{cityName}</Text>
-        <Text style={{fontSize: 10, fontFamily: 'NSC-Li'}}>{formattedTime[1]}</Text>
+        <Text style={{fontSize: 26, fontFamily: 'NSC-Med', letterSpacing: -1}}>{formattedTime[0]}</Text>
+        <Text style={{fontSize: 12, fontFamily: 'Fin-Med', color: 'rgb(68, 164, 186)'}}>{cityName}</Text>
+        <Text style={{fontSize: 10, fontFamily: 'NSC-Li', letterSpacing: 0.5}}>{formattedTime[1]}</Text>
       </View>
       <View style={styles.userTimeDate}>
         <Text style={{fontSize: 24, fontFamily: 'NSC-Reg', letterSpacing: 3}}>{currentTime}</Text>
-        <Text style={{fontSize: 14, fontFamily: 'NSC-Reg', letterSpacing: 0.5, color: 'dimgray'}}>{formattedTime[2]}</Text>
+        <Text style={{fontSize: 13, fontFamily: 'NSC-Reg', letterSpacing: 0.5, color: 'dimgray'}}>{formattedTime[2]}</Text>
       </View>
     </View>
   )

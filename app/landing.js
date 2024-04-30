@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 36,
     textAlign: 'center',
-    fontFamily: 'Finlandica-Bold',
+    fontFamily: 'Fin-Bold',
     color: 'white',
   },
   textShadow: {
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     letterSpacing: -0.1,
     lineHeight: 16,
-    fontFamily: 'Finlandica-Regular',
+    fontFamily: 'Fin-Reg',
   },
   middle: {
     marginLeft: 0,
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 15,
-    fontFamily: 'NotoSansCherokee-SemiBold',
+    fontFamily: 'NSC-SB',
     paddingTop: 12,
     paddingBottom: 12,
     paddingLeft: 32,

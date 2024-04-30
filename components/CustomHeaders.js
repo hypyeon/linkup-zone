@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   text: {
-    fontSize: hp(2.5), 
+    fontSize: hp(2.75), 
     fontFamily: 'Fin-SB',
     color: primaryColor
   }

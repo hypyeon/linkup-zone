@@ -17,7 +17,7 @@ const MainLayout = () => {
     }
     if (isAuthenticated && !inApp) {
       // users redirected to chats
-      router.replace("contacts");
+      router.replace("timezones");
     } else if (isAuthenticated == false) {
       // users redirected to landing page
       router.replace("landing");
