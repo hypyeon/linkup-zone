@@ -7,7 +7,6 @@ export default function ContactList({ users }) {
     <FlatList 
       data={users}
       contentContainerStyle={styles.container}
-      keyExtractor={(index) => index.toString()}
       showsVerticalScrollIndicator={false}
       renderItem={({item, index}) => <ContactItem item={item} index={index} />}
     />

@@ -6,7 +6,7 @@ import moment from 'moment-timezone';
 import { useRouter } from 'expo-router';
 import Clock from './Clock';
 
-export default function TimeZoneList() {
+export default function TimeZoneDisplay() {
   const { onLayoutRootView } = useCustomFonts();
   const router = useRouter();
   const userTime = DateTime.local().zoneName; 
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   addBtn: {
-    width: 48,
+    width: 42,
     resizeMode: 'contain',
   },
 });

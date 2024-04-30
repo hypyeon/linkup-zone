@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     gap: wp(13),
   },
   img: {
-    width: wp(9),
+    width: wp(8),
     marginTop: hp(1.5),
     resizeMode: 'contain',
   }

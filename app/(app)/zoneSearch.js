@@ -2,14 +2,14 @@ import { View, Text, Pressable, StyleSheet } from 'react-native';
 import React, { useState } from 'react';
 import CustomHeaders from '../../components/CustomHeaders';
 import NavBar from '../../components/NavBar';
-import TimeZoneSearch from '../../components/TimeZoneSearch';
+import ZoneList from '../../components/ZoneList';
 
 export default function ZoneSearch() {
 
   return (
     <View style={styles.container}>
       <CustomHeaders title="Time Zone List" />
-      <TimeZoneSearch />
+      <ZoneList />
       <NavBar />
     </View>
   )

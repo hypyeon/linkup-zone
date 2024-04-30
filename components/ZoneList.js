@@ -4,7 +4,7 @@ import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import useCustomFonts from '../constants/CustomFonts';
 import moment from 'moment-timezone';
 
-export default function TimeZoneList() {
+export default function ZoneList() {
   const { onLayoutRootView } = useCustomFonts();
   const allTimeZones = moment.tz.names();
   
