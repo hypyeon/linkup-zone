@@ -1,17 +1,17 @@
-import { View, Text, Pressable, StyleSheet, TextInput } from 'react-native';
-import React, { useRef } from 'react';
+import { View, Pressable, StyleSheet, TextInput } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import ChatRoomHeader from '../../components/ChatRoomHeader';
 import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useAuth } from '../../context/auth';
 import MessageList from '../../components/MessageList';
 import createRoomId from '../../context/createRoomId';
-import { setDoc, doc, Timestamp, collection, addDoc, query, orderBy, onSnapshot } from 'firebase/firestore';
+import { setDoc, doc, Timestamp, collection, addDoc, query, orderBy, onSnapshot, getDoc } from 'firebase/firestore';
 import { db } from '../../firebaseConfig';
 import { Alert } from 'react-native';
 import { DateTime } from 'luxon';
+import convertMsgTime from '../../context/convertMsgTime';
 
 export default function ChatRoom() {
   const router = useRouter();
@@ -55,18 +55,26 @@ export default function ChatRoom() {
       if (inputRef.current) inputRef?.current?.clear();
 
       // converting the message created time to 2 timezones
-      const createdAt = Timestamp.fromDate(new Date());
-      const senderCreatedAt = DateTime.fromJSDate(createdAt.toDate()).setZone(user?.timezone);
-      const receiverCreatedAt = DateTime.fromJSDate(createdAt.toDate()).setZone(item.timezone);
+      const now = DateTime.now();
+      const timeStampObj = convertMsgTime(now, user?.timezone, item.timezone);
+      // console.log(timeStampObj);
       const newDoc = await addDoc(msgRef, {
+        createdAt: Timestamp.fromDate(new Date()),
         userId: user?.userId,
         text: msg,
-        senderName: user?.username,
-        senderZone: user?.timezone,
-        senderCreatedAt: senderCreatedAt.toJSDate(), 
-        receiverCreatedAt: receiverCreatedAt.toJSDate(), 
+        sender: user?.username,
+        receiver: item.username,
+        sentAt: timeStampObj['sender'],
+        receivedAt: timeStampObj['receiver'] 
       });
-      console.log(newDoc['senderCreatedAt'], newDoc['receiverCreatedAt']);
+      /*
+      const newDocSnapshot = await getDoc(newDoc);
+      if (newDocSnapshot.exists()) {
+        console.log('New message data:', newDocSnapshot.data());
+      } else {
+        console.log('New message does not exist.');
+      }
+      */
     } catch (e) {
       Alert.alert('Error', e.message);
     }
@@ -109,7 +117,7 @@ const styles = StyleSheet.create({
   messages: {
     height: '70%',
     //backgroundColor: 'blue',
-    zIndex: -1,
+    //zIndex: 2,
   },
   typeMsg: {
     flexDirection: 'row',

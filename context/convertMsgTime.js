@@ -1,18 +1,22 @@
-const createdAt = Timestamp.fromDate(new Date());
-const senderCreatedAt = DateTime.fromJSDate(createdAt.toDate()).setZone(user?.timezone);
-const receiverCreatedAt = DateTime.fromJSDate(createdAt.toDate()).setZone(item.timezone);
-const newDoc = await addDoc(msgRef, {
-  userId: user?.userId,
-  text: msg,
-  senderName: user?.username,
-  senderZone: user?.timezone,
-  senderCreatedAt: senderCreatedAt.toJSDate(), 
-  receiverCreatedAt: receiverCreatedAt.toJSDate(), 
-});
-console.log(newDoc['senderCreatedAt'], newDoc['receiverCreatedAt']);
+import { avoidGMT } from '../components/Clock';
 
-import { DateTime } from 'luxon';
+export default function convertMsgTime(createdAt, senderZone, receiverZone) {
+  // "createdAt" should be: DateTime.now();
+  // "senderZone" should be: user?.timezone;
+  // "receiverZone" should be: item.timezone;
+  const senderDT = createdAt.setZone(senderZone);
+  const receiverDT = createdAt.setZone(receiverZone);
+  const senderUTC = avoidGMT(senderZone);
+  const receiverUTC = avoidGMT(receiverZone);
 
-function convertMsgTime(createdAt) {
-  
+  const senderTime = senderDT.toFormat('t');
+  const receiverTime = receiverDT.toFormat('t');
+
+  const senderInfo = `${senderUTC} ${senderTime}`;
+  const receiverInfo = `${receiverUTC} ${receiverTime}`;
+
+  return {
+    sender: senderInfo,
+    receiver: receiverInfo
+  }
 }
