@@ -24,7 +24,7 @@ export default function ChatRoomHeader({ user, router }) {
       <View style={styles.userInfo}>
         <Text style={{fontSize: 16, fontFamily: 'NSC-SB'}}>{user.username}</Text>
         <View style={{flexDirection: 'column', alignItems: 'center'}}>
-          <Text style={{fontFamily: 'NSC-Reg', color: primaryColor}}>{userInfoObj['zone']} {userInfoObj['time']}</Text>
+          <Text style={{fontFamily: 'NSC-SB', letterSpacing: 0.25, color: primaryColor}}>{userInfoObj['zone']} {userInfoObj['time']}</Text>
           <Text style={{fontFamily: 'Fin-Reg', fontSize: 12, color: 'gray'}}>{userInfoObj['date']}</Text>
         </View>
       </View>
