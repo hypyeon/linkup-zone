@@ -4,9 +4,14 @@ import { avoidGMT } from './Clock';
 import { DateTime } from 'luxon';
 // import { router } from 'expo-router';
 import useCustomFonts from '../constants/CustomFonts';
+import renderUserInfo from '../context/renderUserInfo';
 
-export default function ContactItem({ item }) {
+export default function ContactItem({ item, router }) {
   const { onLayoutRootView } = useCustomFonts();
+
+  const openChat = () => {
+    router.push({ pathname: '/chatRoom', params: item})
+  };
 
   function shortenName(fullName) {
     const parts = fullName.split(' ');
@@ -19,30 +24,7 @@ export default function ContactItem({ item }) {
   }
 
   const zoneName = item?.timezone;
-  const zoneNameShort = avoidGMT(zoneName);
-  const [currentTime, setCurrentTime] = useState('');
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      const dt = DateTime.local().setZone(zoneName);
-      const time = dt.toFormat('t');
-      setCurrentTime(time);
-    }, 500);
-
-    return () => clearInterval(intervalId);
-  }, [zoneName]);
-  const [currentDate, setCurrentDate] = useState('');
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      const dt = DateTime.local().setZone(zoneName);
-      const day = dt.toFormat('ccc');
-      const month = dt.toFormat('LLL');
-      const date = dt.toFormat('dd');
-      const full = `${day}, ${month} ${date}`;
-      setCurrentDate(full);
-    }, 500);
-
-    return () => clearInterval(intervalId);
-  }, [zoneName]);
+  const userInfoObj = renderUserInfo(zoneName);
 
   const colorPalette = ['#e8dff5', '#fce1e4', '#fcf4dd', '#ddedea', '#daeaf6'];
   const randomIndex = Math.floor(Math.random() * colorPalette.length);
@@ -60,21 +42,21 @@ export default function ContactItem({ item }) {
       </View>
       <View style={{display: 'flex', alignItems: 'center'}}>
         <Text style={styles.userTimeZone}>
-          {zoneNameShort} {currentTime}
+          {userInfoObj['zone']} {userInfoObj['time']}
         </Text>
         <Text style={styles.userDate}>
-          {currentDate}
+          {userInfoObj['date']}
         </Text>
       </View>
       <View style={styles.buttons}>
         <View>
-          <Pressable style={styles.chatBtn}>
-            <Text style={styles.btnTxt}>Chat</Text>
+          <Pressable style={styles.chatBtn} onPress={openChat}>
+            <Text style={styles.btnTxt}>Chat Now</Text>
           </Pressable>
         </View>
         <View>
           <Pressable style={styles.schedBtn}>
-            <Text style={styles.btnTxt}>Schedule send</Text>
+            <Text style={styles.btnTxt}>Send Later</Text>
           </Pressable>
         </View>
       </View>
@@ -150,9 +132,9 @@ const styles = StyleSheet.create({
   },
   btnTxt: {
     color: 'white',
-    fontFamily: 'NSC-SB',
-    fontSize: 14,
-    lineHeight: 16,
+    fontFamily: 'NSC-Black',
+    fontSize: 13,
+    lineHeight: 20,
     textAlign: 'center',
   },
 });

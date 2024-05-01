@@ -2,13 +2,24 @@ import { View, Text, Pressable, StyleSheet } from 'react-native';
 import React from 'react';
 import CustomHeaders from '../../components/CustomHeaders';
 import NavBar from '../../components/NavBar';
+import Loading from '../../components/Loading';
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import ChatList from '../../components/ChatList';
+import fetchUserData from '../../context/fetchUserData';
 
-export default function Contacts() {
+export default function Chats() {
+  const users = fetchUserData();
 
   return (
     <View style={styles.container}>
       <CustomHeaders title="Chat" />
-      {/* Chat List goes here */}
+      {
+        users.length > 0 ? (
+          <ChatList users={users} />
+        ) : (
+          <Loading size={hp(20)} />
+        )
+      }
       <NavBar />
     </View>
   )

@@ -1,9 +1,9 @@
-import { FlatList, ScrollView, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 import React from 'react';
-import ContactItem from './ContactItem';
+import ChatItem from './ChatItem';
 import { useRouter } from 'expo-router';
 
-export default function ContactList({ users }) {
+export default function ChatList({ users }) {
   const router = useRouter();
   return (
     <FlatList 
@@ -11,11 +11,12 @@ export default function ContactList({ users }) {
       contentContainerStyle={styles.container}
       showsVerticalScrollIndicator={false}
       renderItem={({item, index}) => 
-        <ContactItem 
+        <ChatItem 
           item={item} 
           index={index} 
           router={router}
-        />}
+        />
+      }
     />
   )
 }
@@ -25,6 +26,5 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    marginTop: 20,
   },
 });
