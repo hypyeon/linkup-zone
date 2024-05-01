@@ -12,10 +12,12 @@ export default function convertMsgTime(createdAt, senderZone, receiverZone) {
   const senderTime = senderDT.toFormat('t');
   const receiverTime = receiverDT.toFormat('t');
 
+  const formattedDate = createdAt.toFormat('dd') + ' ' + createdAt.toFormat('LLL');
   const senderInfo = `${senderUTC} ${senderTime}`;
   const receiverInfo = `${receiverUTC} ${receiverTime}`;
 
   return {
+    date: formattedDate,
     sender: senderInfo,
     receiver: receiverInfo
   }

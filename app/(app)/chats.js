@@ -6,16 +6,18 @@ import Loading from '../../components/Loading';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import ChatList from '../../components/ChatList';
 import fetchUserData from '../../context/fetchUserData';
+import { useAuth } from '../../context/auth';
 
 export default function Chats() {
   const users = fetchUserData();
+  const { user } = useAuth();
 
   return (
     <View style={styles.container}>
       <CustomHeaders title="Chat" />
       {
         users.length > 0 ? (
-          <ChatList users={users} />
+          <ChatList users={users} currentUser={user} />
         ) : (
           <Loading size={hp(20)} />
         )

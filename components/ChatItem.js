@@ -2,8 +2,11 @@ import { View, Text, Pressable, StyleSheet } from 'react-native';
 import React, { useState, useEffect } from 'react';
 // import { router } from 'expo-router';
 import useCustomFonts from '../constants/CustomFonts';
+import createRoomId from '../context/createRoomId';
+import { doc, collection, query, orderBy, onSnapshot } from 'firebase/firestore';
+import { db } from '../firebaseConfig';
 
-export default function ChatItem({ item, router }) {
+export default function ChatItem({ item, router, currentUser }) {
   const { onLayoutRootView } = useCustomFonts();
 
   const colorPalette = ['#e8dff5', '#fce1e4', '#fcf4dd', '#ddedea', '#daeaf6'];
@@ -12,6 +15,44 @@ export default function ChatItem({ item, router }) {
   
   const openChat = () => {
     router.push({ pathname: '/chatRoom', params: item})
+  };
+
+  const [lastMsg, setLastMsg] = useState(undefined);
+  useEffect(() => {
+    let roomId = createRoomId(currentUser?.userId, item.userId);
+    const docRef = doc(db, 'rooms', roomId);
+    const msgRef = collection(docRef, 'messages');
+    const q = query(msgRef, orderBy('createdAt', 'desc'));
+    let unsub = onSnapshot(q, (snapshot) => {
+      let allMsg = snapshot.docs.map(doc => {
+        return doc.data();
+      });
+      setLastMsg(allMsg[0]? allMsg[0] : null);
+    });
+    return unsub;
+  }, []);
+
+  // console.log('lastMessage:', lastMsg)
+
+  const renderLastMsg = () => {
+    if (typeof lastMsg === 'undefined') {
+      return 'Loading...';
+    }
+    if (lastMsg) {
+      if (currentUser.userId === lastMsg.userId) {
+        return 'You: ' + lastMsg.text;
+      }
+      return lastMsg.text;
+    } else {
+      return 'Say Hi! 🙌';
+    }
+  };
+
+  const renderDate = () => {
+    if (lastMsg) {
+      return lastMsg.timeStampDate;
+    }
+    return ' ';
   };
 
   return (
@@ -28,11 +69,15 @@ export default function ChatItem({ item, router }) {
           <Text style={styles.userName}>
             {item?.username}
           </Text>
-          <Text style={{fontFamily: 'NSC-Li', fontSize: 12, letterSpacing: 0.25}}>Message content</Text>
+          <Text style={{fontFamily: 'NSC-Li', fontSize: 12, letterSpacing: 0.25}}>
+            {renderLastMsg()}
+          </Text>
         </View>
       </View>
       <View>
-        <Text style={{color: primaryColor, fontFamily: 'NSC-Reg'}}>12:00</Text>
+        <Text style={{color: primaryColor, fontFamily: 'Fin-Reg', fontSize: 12}}>
+          {renderDate()}
+        </Text>
       </View>
     </Pressable>
   )

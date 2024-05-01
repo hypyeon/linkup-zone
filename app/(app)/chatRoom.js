@@ -64,6 +64,7 @@ export default function ChatRoom() {
         text: msg,
         sender: user?.username,
         receiver: item.username,
+        timeStampDate: timeStampObj['date'],
         sentAt: timeStampObj['sender'],
         receivedAt: timeStampObj['receiver'] 
       });

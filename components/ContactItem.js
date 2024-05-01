@@ -32,15 +32,17 @@ export default function ContactItem({ item, router }) {
   
   return (
     <View style={styles.container} onLayout={onLayoutRootView}>
-      <View style={[styles.userInitial, {backgroundColor: selectedColor}]}>
-        <Text style={styles.initial}>{item?.username.charAt(0)}</Text>
+      <View style={styles.name}>
+        <View style={[styles.userInitial, {backgroundColor: selectedColor}]}>
+          <Text style={styles.initial}>{item?.username.charAt(0)}</Text>
+        </View>
+        <View>
+          <Text style={styles.userName}>
+            {shortenName(item?.username)}
+          </Text>
+        </View>
       </View>
-      <View>
-        <Text style={styles.userName}>
-          {shortenName(item?.username)}
-        </Text>
-      </View>
-      <View style={{display: 'flex', alignItems: 'center'}}>
+      <View style={{display: 'flex', alignItems: 'center', width: '26%'}}>
         <Text style={styles.userTimeZone}>
           {userInfoObj['zone']} {userInfoObj['time']}
         </Text>
@@ -72,22 +74,27 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 6,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    paddingVertical: 12,
+    borderBottomColor: 'lightgray',
+    borderBottomWidth: 0.5,
+    paddingVertical: 10,
     paddingHorizontal: 20,
   },
+  name: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    width: '42%',
+  },
   userInitial: {
-    width: 55,
-    height: 55,
+    width: 45,
+    height: 45,
     borderRadius: "50%",
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
   initial: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: '600',
     color: 'white',
     fontFamily: 'NSC-Black',
@@ -98,7 +105,7 @@ const styles = StyleSheet.create({
   },
   userName: {
     fontSize: 14,
-    fontFamily: 'NSC-Med',
+    fontFamily: 'NSC-Med'
   },
   userTimeZone: {
     fontSize: 14,
