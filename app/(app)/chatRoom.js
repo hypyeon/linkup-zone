@@ -67,7 +67,6 @@ export default function ChatRoom() {
         timeStampDate: timeStampObj['date'],
         sentAt: timeStampObj['sender'],
         receivedAt: timeStampObj['receiver'],
-        scheduled: false
       });
       /*
       const newDocSnapshot = await getDoc(newDoc);

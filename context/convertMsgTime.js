@@ -19,6 +19,8 @@ export default function convertMsgTime(createdAt, senderZone, receiverZone) {
   return {
     date: formattedDate,
     sender: senderInfo,
-    receiver: receiverInfo
+    receiver: receiverInfo,
+    senderUTC: senderUTC,
+    receiverUTC: receiverUTC
   }
 }

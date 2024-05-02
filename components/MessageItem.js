@@ -4,20 +4,40 @@ import React from 'react';
 export default function MessageItem({ message, currentUser }) {
 
   if (currentUser?.userId == message?.userId) {
-    return (
-      <View style={[styles.msg, {justifyContent: 'flex-end', paddingRight: 24}]}>
-        <View style={[styles.timeMsg, {alignItems: 'flex-end'}]}>
-          <Text style={styles.timeTxt}>
-            {message?.sentAt} | {message?.receivedAt}
-          </Text>
-          <View style={[styles.bubble, styles.sentRadius]}>
-            <Text style={styles.font}>
-              {message?.text}
+    if (message?.scheduled) {
+      return (
+        <View style={[styles.msg, {justifyContent: 'flex-end', paddingRight: 24}]}>
+          <View style={[styles.bubble, styles.sentRadius, {backgroundColor: '#E5E5E5', marginBottom: 8}]}>
+            <Text style={styles.schedTime}>
+              Scheduled to be sent at: 
             </Text>
+            <Text style={styles.schedZones}>
+               {message?.scheduled.sender.UTC} {message?.scheduled.sender.date} | {message?.scheduled.receiver.UTC} {message?.scheduled.receiver.date}
+            </Text>
+            <View style={styles.schedMsgCont}>
+              <Text style={styles.font}>
+                {message?.text}
+              </Text>
+            </View>
           </View>
         </View>
-      </View>
-    )
+      )
+    } else {
+      return (
+        <View style={[styles.msg, {justifyContent: 'flex-end', paddingRight: 24}]}>
+          <View style={[styles.timeMsg, {alignItems: 'flex-end'}]}>
+            <Text style={styles.timeTxt}>
+              {message?.sentAt} | {message?.receivedAt}
+            </Text>
+            <View style={[styles.bubble, styles.sentRadius, {backgroundColor: 'white'}]}>
+              <Text style={styles.font}>
+                {message?.text}
+              </Text>
+            </View>
+          </View>
+        </View>
+      )  
+    }
   } else {
     return (
       <View style={[styles.msg, {justifyContent: 'flex-start', paddingLeft: 24}]}>
@@ -61,7 +81,6 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: "12%",
     borderBottomLeftRadius: "12%",
     borderTopLeftRadius: "12%",
-    backgroundColor: 'white',
   },
   receivedRadius: {
     borderTopRightRadius: "12%",
@@ -82,5 +101,24 @@ const styles = StyleSheet.create({
     letterSpacing: 0.3,
     paddingHorizontal: 4,
     marginBottom: 2,
+  },
+  schedMsgCont: {
+    paddingVertical: 4,
+    borderTopWidth: 0.25,
+    borderColor: 'gray',
+    marginTop: 4,
+  },
+  schedTime: {
+    fontFamily: 'NSC-Reg',
+    fontStyle: 'italic',
+    fontSize: 10,
+    color: 'dimgray',
+    letterSpacing: 0.25,
+  },
+  schedZones: {
+    fontFamily: 'NSC-Med',
+    fontSize: 11,
+    color: 'gray',
+    letterSpacing: 0.25,
   },
 });

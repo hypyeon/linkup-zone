@@ -49,8 +49,8 @@ export default function ScheduleSend() {
     // when selected date and time, it's automatically in UTC format. 
     // For example, I (PDT) chose 2024-05-02 12:00 PM, it shows: 2024-05-02T19:00:00.000Z 
     // Expected result is: 2024-05-02T12:00:00.000+09:00 (in KST), which is: 
-
-    console.log(date);
+    
+    console.log(date); // 2024-05-02T19:00:00.000Z
     const dateToString = date.toISOString();
     const timeOnly = DateTime.fromISO(dateToString).toString().slice(0, -6);
     // now we got: 2024-05-02T12:00:00.000-07:00
@@ -58,8 +58,29 @@ export default function ScheduleSend() {
     // now we need to swap "-07:00" to "+09:00"
     // short offset value, we can get it by: 
     //DateTime.local().setZone(zoneName).toFormat('ZZ'); 
-    const offSet = DateTime.local().setZone(item.timezone).toFormat('ZZ');
-    console.log(timeOnly + offSet);
+    const secUser = DateTime.local().setZone(item.timezone);
+    const offSet = secUser.toFormat('ZZ'); // +09:00
+    const secUserTime = timeOnly + offSet; // 2024-05-02T12:00:00.000+09:00
+    const secUserDt = DateTime.fromISO(timeOnly);
+    console.log(secUserDt.toFormat('LLL') + ' ' + secUserDt.toFormat('dd')); 
+    const firUserDt = DateTime.fromISO(secUserTime).setZone(user.timezone);
+    const firUserTime = firUserDt.toString();
+    console.log(firUserTime);
+    console.log(secUserTime);
+    console.log(firUserDt.toFormat('t LLL dd'));
+    console.log(secUserDt.toFormat('t LLL dd'));
+
+    // returning 4 values:
+    // 1) ISO string of sender time (i.e. 2024-05-02T20:00:00.000-07:00)
+    // 2) ISO string of receiver time (i.e. 2024-05-02T12:00:00.000+09:00)
+    // 3) formatted date of sender time (i.e. 20:00 May 01)
+    // 4) formatted date of receiver time (i.e. 12:00 May 02)
+    return {
+      sender: firUserTime,
+      receiver: secUserTime,
+      senderDate: firUserDt.toFormat('t LLL dd'),
+      receiverDate: secUserDt.toFormat('t LLL dd')
+    }
   };
 
   const textRef = useRef('');
@@ -78,6 +99,8 @@ export default function ScheduleSend() {
       const now = DateTime.now();
       const timeStampObj = convertMsgTime(now, user?.timezone, item.timezone);
       // console.log(timeStampObj);
+      const { sender, receiver, senderDate, receiverDate } = handleDateSelected(new Date());
+
       const newDoc = await addDoc(msgRef, {
         createdAt: Timestamp.fromDate(new Date()),
         userId: user?.userId,
@@ -87,7 +110,18 @@ export default function ScheduleSend() {
         timeStampDate: timeStampObj['date'],
         sentAt: timeStampObj['sender'],
         receivedAt: timeStampObj['receiver'],
-        scheduled: true
+        scheduled: {
+          sender: {
+            time: sender,
+            date: senderDate,
+            UTC: timeStampObj['senderUTC'],
+          },
+          receiver: {
+            time: receiver,
+            date: receiverDate,
+            UTC: timeStampObj['receiverUTC'],
+          }
+        }
       });
     } catch (e) {
       Alert.alert('Error', e.message);
