@@ -1,7 +1,7 @@
 # Linkup Zone
 by [Hayeong Pyeon](https://linktr.ee/hypyeon)
 
-![mockup](/assets/images/mockup.png)
+![mockup](/assets/images/preview-UI.png)
 
 ## Table of Contents
 1. [Technologies Used](#technologies-used)
@@ -12,42 +12,53 @@ by [Hayeong Pyeon](https://linktr.ee/hypyeon)
 6. [License](#license)
 
 ## Technologies used
-*to be updated*
-- React Native
+- React, React Native 
 - Expo Go
 - JavaScript
-- Firebase
+- Node.js 
+- Firebase (Firestore, Firebase Auth)
+- Luxon, Temporal, Moment.js 
 
 ## Description
-*to be updated*
 - This is a Capstone project, one of graduation requirements by Epicodus.
-- Planning, research log & app description can be found [here](https://github.com/hypyeon/epicodus-capstone-brainstorming).
+- Planning, research log & app planning can be found [here](https://github.com/hypyeon/epicodus-capstone-brainstorming).
+- This web application allows users to create accounts, log in and out, and send other users messages (live-time) that display the delivered time in 2 time zones. 
+- In the dashboard (when logged in), there are clocks with different time zones you select to display in UI (time zone list available, selection is not atm). 
 
 ## Setup Requirements
-*to be updated*
+### Precondition
+> [!NOTE] 
+> Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
 
-## Github Pages
-*to be updated*
+1. In your directory of choice, run the following command to clone this repo:
+```bash
+git clone https://github.com/hypyeon/linkup-zone.git
+```
+2. Open the project folder on a text editor. 
+3. Create a file named `firebase-config.js` in the root directory and insert the following information. 
+```bash
+export const firebaseConfig = {
+  apiKey: [YOUR-API-KEY],
+  authDomain: [YOUR-AUTH-DOMAIN],
+  projectId: [YOUR-PROJECT-ID],
+  storageBucket: [YOUR-STORAGE-BUCKET],
+  messagingSenderId: [YOUR-MESSAGING-SENDER-ID],
+  appId: [YOUR-APP-ID]
+};
+``` 
+> [!IMPORTANT]
+> This file includes sensitive information including `apiKey` credential for Firebase Configuration thus is currently hidden by `.gitignore` file. This information will only be available to Epicodus instructors and students. 
+> To create your own `apiKey` with Firebase web app, follow the steps below. 
 
-## Known Bugs
-- *currently under development: expected to be completed by May 6th*
+- Create an account and log in to the Firebase. 
+- Under **Your Firebase projects**, click **Add project** and create a project with your own choice of name.
+- In your Firebase console, add a **web application**.
+- After registering your app with your own choice of nickname, **Add Firebase SDK** step will generate your own SDKs. Copy the values of each key and replace the applicable contents of your `firebase-config.js` file you created. 
+- Run `npm install firebase` in your terminal. 
 
-## License
-[MIT](/LICENSE.txt) Copyright © 2024 Hayeong Pyeon
+### Step 1: Start the Metro Server
 
----------------------------------------------------
-
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
-
-# Getting Started
-
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
-
-## Step 1: Start the Metro Server
-
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
-
-To start Metro, run the following command from the _root_ of your React Native project:
+First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native. Run the following command from the _root_ of your React Native project:
 
 ```bash
 # using npm
@@ -57,21 +68,12 @@ npm start
 yarn start
 ```
 
-## Step 2: Start your Application
+### Step 2: Start your Application
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _iOS_ app:
 
-### For Android
+*only instructing iOS app running since the current responsive design is best structured with iPhone 15 Pro device*
 
-```bash
-# using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### For iOS
 
 ```bash
 # using npm
@@ -81,38 +83,11 @@ npm run ios
 yarn ios
 ```
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+If everything is set up _correctly_, you should see your new app running in your _iOS Simulator_ shortly provided you have set up your simulator correctly.
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
 
-## Step 3: Modifying your App
+## Known Bugs
+- *currently under development: expected to be completed by May 6th*
 
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+## License
+Copyright © 2024 Hayeong Pyeon | [MIT License](/LICENSE.txt)
