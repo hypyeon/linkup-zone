@@ -1,4 +1,4 @@
-import { View, Pressable, StyleSheet, TextInput } from 'react-native';
+import { View, Pressable, StyleSheet, TextInput, Text, Button } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import ChatRoomHeader from '../../components/ChatRoomHeader';
 import { useRouter } from 'expo-router';
@@ -12,8 +12,10 @@ import { db } from '../../firebaseConfig';
 import { Alert } from 'react-native';
 import { DateTime } from 'luxon';
 import convertMsgTime from '../../context/convertMsgTime';
+import DatePicker from '../../context/datePicker';
+import renderUserInfo from '../../context/renderUserInfo';
 
-export default function ChatRoom() {
+export default function ScheduleSend() {
   const router = useRouter();
   const { user } = useAuth(); // logged in user
   const item = useLocalSearchParams(); // user to chat with
@@ -42,6 +44,24 @@ export default function ChatRoom() {
     });
   }; 
 
+  const handleDateSelected = (date) => {
+    // here will be the actual time in user's time zone that will be sent to the receiver... 
+    // when selected date and time, it's automatically in UTC format. 
+    // For example, I (PDT) chose 2024-05-02 12:00 PM, it shows: 2024-05-02T19:00:00.000Z 
+    // Expected result is: 2024-05-02T12:00:00.000+09:00 (in KST), which is: 
+
+    console.log(date);
+    const dateToString = date.toISOString();
+    const timeOnly = DateTime.fromISO(dateToString).toString().slice(0, -6);
+    // now we got: 2024-05-02T12:00:00.000-07:00
+    // we need to get: 2024-05-02T12:00:00.000+09:00
+    // now we need to swap "-07:00" to "+09:00"
+    // short offset value, we can get it by: 
+    //DateTime.local().setZone(zoneName).toFormat('ZZ'); 
+    const offSet = DateTime.local().setZone(item.timezone).toFormat('ZZ');
+    console.log(timeOnly + offSet);
+  };
+
   const textRef = useRef('');
   const inputRef = useRef(null);
   const handleSendMsg = async () => {
@@ -67,16 +87,8 @@ export default function ChatRoom() {
         timeStampDate: timeStampObj['date'],
         sentAt: timeStampObj['sender'],
         receivedAt: timeStampObj['receiver'],
-        scheduled: false
+        scheduled: true
       });
-      /*
-      const newDocSnapshot = await getDoc(newDoc);
-      if (newDocSnapshot.exists()) {
-        console.log('New message data:', newDocSnapshot.data());
-      } else {
-        console.log('New message does not exist.');
-      }
-      */
     } catch (e) {
       Alert.alert('Error', e.message);
     }
@@ -90,19 +102,22 @@ export default function ChatRoom() {
       <View style={styles.messages}>
         <MessageList messages={messages} currentUser={user} />
       </View>
-      <View style={styles.typeMsg}>
-        <TextInput
-          placeholder="Type a message..."
-          style={styles.input}
-          onChangeText={value => textRef.current = value}
-          ref={inputRef}
-        />
-        <Pressable 
+      <View style={styles.type}>
+        <DatePicker onDateSelected={handleDateSelected} userZone={renderUserInfo(item.timezone)['zone']} />
+        <View style={styles.msgBtn}>
+          <TextInput
+            placeholder="Type a message..."
+            style={styles.input}
+            onChangeText={value => textRef.current = value}
+            ref={inputRef}
+          />
+          <Pressable 
           style={styles.send}
           onPress={handleSendMsg}
-        >
-          <MaterialCommunityIcons name="send-circle" size={40} color={primaryColor} />          
-        </Pressable>
+          >
+            <MaterialCommunityIcons name="send-circle" size={40} color={primaryColor} />          
+          </Pressable>
+        </View>
       </View>
     </View>
   )
@@ -121,18 +136,25 @@ const styles = StyleSheet.create({
     //backgroundColor: 'blue',
     //zIndex: 2,
   },
-  typeMsg: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+  type: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
     width: '100%',
     paddingTop: 14,
-    paddingBottom: 36,
+    paddingBottom: 42,
     paddingHorizontal: 8,
     backgroundColor: 'rgba(0, 0, 0, 0.05)',
+    gap: 8,
+  },
+  msgBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',  
   },
   send: {
-    marginRight: 4,
+    marginLeft: 4,
   },
   input: {
     backgroundColor: 'white',

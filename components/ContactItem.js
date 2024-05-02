@@ -13,6 +13,10 @@ export default function ContactItem({ item, router }) {
     router.push({ pathname: '/chatRoom', params: item})
   };
 
+  const openSchedSend = () => {
+    router.push({ pathname: '/scheduleSend', params: item})
+  };
+
   function shortenName(fullName) {
     const parts = fullName.split(' ');
     if (parts.length < 2) {
@@ -57,7 +61,7 @@ export default function ContactItem({ item, router }) {
           </Pressable>
         </View>
         <View>
-          <Pressable style={styles.schedBtn}>
+          <Pressable style={styles.schedBtn} onPress={openSchedSend}>
             <Text style={styles.btnTxt}>Send Later</Text>
           </Pressable>
         </View>

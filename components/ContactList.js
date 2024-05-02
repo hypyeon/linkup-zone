@@ -15,7 +15,8 @@ export default function ContactList({ users }) {
           item={item} 
           index={index} 
           router={router}
-        />}
+        />
+      }
     />
   )
 }
