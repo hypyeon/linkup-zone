@@ -87,7 +87,9 @@ If everything is set up _correctly_, you should see your new app running in your
 
 
 ## Known Bugs
-- *currently under development: expected to be completed by May 6th*
+The followings are unachieved goals as of May 6th, the due date for the Capstone project. They are to be under development after this date. 
+- From Time Zone List, users are supposed to be able to click on a time zone and redirected to the Time Zones tab with the newly created clock of the selected time. Currently these list items are not selectable. 
+- Schedule-send function was initiated but not completed. Because of this, you cannot deliver schedule-send messages, and there is an error occurring when logging out from the Chat tab - since the ScheduleSend and ChatRoom message functions are clashing at the moment. 
 
 ## License
 Copyright © 2024 Hayeong Pyeon | [MIT License](/LICENSE.txt)
