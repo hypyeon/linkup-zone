@@ -48,8 +48,7 @@ export default function ScheduleSend() {
     // here will be the actual time in user's time zone that will be sent to the receiver... 
     // when selected date and time, it's automatically in UTC format. 
     // For example, I (PDT) chose 2024-05-02 12:00 PM, it shows: 2024-05-02T19:00:00.000Z 
-    // Expected result is: 2024-05-02T12:00:00.000+09:00 (in KST), which is: 
-    
+    // Expected result is: 2024-05-02T12:00:00.000+09:00 (in KST), which is:  
     console.log(date); // 2024-05-02T19:00:00.000Z
     const dateToString = date.toISOString();
     const timeOnly = DateTime.fromISO(dateToString).toString().slice(0, -6);
@@ -99,7 +98,7 @@ export default function ScheduleSend() {
       const now = DateTime.now();
       const timeStampObj = convertMsgTime(now, user?.timezone, item.timezone);
       // console.log(timeStampObj);
-      const { sender, receiver, senderDate, receiverDate } = handleDateSelected(new Date());
+      const { sender, receiver, senderDate, receiverDate } = handleDateSelected();
 
       const newDoc = await addDoc(msgRef, {
         createdAt: Timestamp.fromDate(new Date()),
@@ -137,12 +136,17 @@ export default function ScheduleSend() {
         <MessageList messages={messages} currentUser={user} />
       </View>
       <View style={styles.type}>
-        <DatePicker onDateSelected={handleDateSelected} userZone={renderUserInfo(item.timezone)['zone']} />
+        <DatePicker 
+          onDateSelected={handleDateSelected} 
+          userZone={renderUserInfo(item.timezone)['zone']} 
+        />
         <View style={styles.msgBtn}>
           <TextInput
             placeholder="Type a message..."
             style={styles.input}
-            onChangeText={value => textRef.current = value}
+            onChangeText={
+              value => textRef.current = value
+            }
             ref={inputRef}
           />
           <Pressable 
